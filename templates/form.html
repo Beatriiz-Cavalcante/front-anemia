@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="form-page">
     <div class="container">
         <h1>Teste Anemia</h1>
-        <form method="POST">
+        <form id="anemiaForm" method="POST">
             <label for="campo1">Sexo </label>
             <input type="text" name="campo1" required>
 
@@ -22,13 +22,15 @@
             <label for="campo4">Percentual pixel verde </label>
             <input type="text" name="campo4" required>
 
-            <label for="campo4">Hemoglobinas </label>
-            <input type="text" name="campo4" required>
+            <label for="campo5">Hemoglobinas </label>
+            <input type="text" name="campo5" required>
 
             <button type="submit">Enviar</button>
             <a href="dashboard.html">Ir para o dashboard</a>
 
         </form>
+        <div id="resultado"></div>
     </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
