@@ -1,7 +1,6 @@
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f6f8;
+    background: #830E1A;
     color: #333;
     margin: 0;
     padding: 0;
@@ -47,7 +46,7 @@ button, .back-button {
     width: 100%;
     padding: 12px;
     margin-top: 30px;
-    background-color: #3498db;
+    background-color: #5B060F ;
     color: white;
     border: none;
     border-radius: 6px;
@@ -60,7 +59,7 @@ button, .back-button {
 }
 
 button:hover, .back-button:hover {
-    background-color: #2980b9;
+    background-color: #49030a;
 }
 
 a {
