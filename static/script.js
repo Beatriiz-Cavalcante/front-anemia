@@ -28,8 +28,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const result = await response.json();
+
+            let mensagem = '';
+
+            if (result.predicao === 1) {
+                mensagem = 'Positivo para anemia';
+            } else {
+                mensagem = 'Negativo para anemia';
+            }
+
             document.getElementById('resultado').innerHTML = `
-                <p><strong>Resultado da Predição:</strong> ${result.predicao}</p>
+                <p><strong>Resultado da Predição:</strong> ${mensagem}</p>
             `;
         } catch (error) {
             console.error("Erro na requisição:", error.message);

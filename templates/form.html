@@ -11,7 +11,10 @@
         <h1>Teste Anemia</h1>
         <form id="anemiaForm" method="POST">
             <label for="campo1">Sexo </label>
-            <input type="text" name="campo1" required>
+            <select name="campo1" required >
+                <option value="0">Masculino</option>
+                <option value="1">Feminino</option>
+            </select>
 
             <label for="campo2">Percentual pixel vermelho </label>
             <input type="text" name="campo2" required>
@@ -26,7 +29,7 @@
             <input type="text" name="campo5" required>
 
             <button type="submit">Enviar</button>
-            <a href="dashboard.html">Ir para o dashboard</a>
+            <a href="{{ url_for('dashboard') }}">Ir para o dashboard</a>
 
         </form>
         <div id="resultado"></div>
