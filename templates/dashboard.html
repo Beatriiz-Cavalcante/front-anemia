@@ -1,13 +1,3 @@
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body class="dashboard-page">
-   
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,6 +7,7 @@
 </head>
 <body class="dashboard-page">
     <h1>Dashboard</h1>
+
     <div class="container">
         <h2>Hemoglobinas</h2>
         <canvas id="graficoHb"></canvas>
@@ -27,57 +18,83 @@
         <canvas id="graficoRGB"></canvas>
     </div>
 
+    <div class="container">
+        <h2>Distribuição de Resultados</h2>
+        <canvas id="graficoResultados"></canvas>
+    </div>
+
     <a href="{{ url_for('form') }}" class="back-button">Voltar ao formulário</a>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            const hbs = {{ hbs|tojson }};
-            const reds = {{ reds|tojson }};
-            const greens = {{ greens|tojson }};
-            const blues = {{ blues|tojson }};
-            const labels = hbs.map((_, i) => `Registro ${i+1}`);
+    <script>
+        const hbs = {{ hbs|tojson }};
+        const reds = {{ reds|tojson }};
+        const greens = {{ greens|tojson }};
+        const blues = {{ blues|tojson }};
+        const resultados = {{ resultados|tojson }};
+        const labels = hbs.map((_, i) => `Registro ${i+1}`);
 
-            new Chart(document.getElementById('graficoHb'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Hemoglobina (Hb)',
-                        data: hbs,
-                        borderColor: 'purple',
+        new Chart(document.getElementById('graficoHb'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Hemoglobina (Hb)',
+                    data: hbs,
+                    borderColor: 'purple',
+                    fill: false
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('graficoRGB'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Pixel Vermelho',
+                        data: reds,
+                        borderColor: 'red',
                         fill: false
-                    }]
-                }
-            });
+                    },
+                    {
+                        label: 'Pixel Verde',
+                        data: greens,
+                        borderColor: 'green',
+                        fill: false
+                    },
+                    {
+                        label: 'Pixel Azul',
+                        data: blues,
+                        borderColor: 'blue',
+                        fill: false
+                    }
+                ]
+            }
+        });
 
-            new Chart(document.getElementById('graficoRGB'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Pixel Vermelho',
-                            data: reds,
-                            borderColor: 'red',
-                            fill: false
-                        },
-                        {
-                            label: 'Pixel Verde',
-                            data: greens,
-                            borderColor: 'green',
-                            fill: false
-                        },
-                        {
-                            label: 'Pixel Azul',
-                            data: blues,
-                            borderColor: 'blue',
-                            fill: false
-                        }
-                    ]
-                }
-            });
-        </script>
-</body>
-</html>
+        // Contar os valores de cada classe do resultado
+        const contagem = {};
+        resultados.forEach(r => {
+            contagem[r] = (contagem[r] || 0) + 1;
+        });
 
+        const resultadoLabels = Object.keys(contagem).map(key => `Classe ${key}`);
+        const resultadoValores = Object.values(contagem);
+
+        new Chart(document.getElementById('graficoResultados'), {
+            type: 'pie', // você pode trocar por 'bar' se preferir gráfico de barras
+            data: {
+                labels: resultadoLabels,
+                datasets: [{
+                    label: 'Distribuição por classe',
+                    data: resultadoValores,
+                    backgroundColor: ['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854'],
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
 </body>
 </html>
