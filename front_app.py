@@ -28,16 +28,32 @@ def dashboard():
     try:
         response = requests.get("http://127.0.0.1:5000/consultar")
         dados = response.json()
+
+        resultados = [item['resultado'] for item in dados]
+        total = len(resultados)
+        positivos = resultados.count(1)
+        negativos = resultados.count(0)
+
+        sexos = [item['Sex'] for item in dados]
+        homens = sexos.count(1)
+        mulheres = sexos.count(0)
+
         return render_template('dashboard.html',
             hbs=[item['Hb'] for item in dados],
             reds=[item['%Red Pixel'] for item in dados],
             greens=[item['%Green pixel'] for item in dados],
             blues=[item['%Blue pixel'] for item in dados],
-            resultados=[item['resultado'] for item in dados]
+            resultados=resultados,
+            total=total,
+            positivos=positivos,
+            negativos=negativos,
+            homens=homens,
+            mulheres=mulheres
         )
     except requests.exceptions.RequestException as e:
         print("Erro ao buscar dados da API:", e)
         return "Erro ao carregar o dashboard.", 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

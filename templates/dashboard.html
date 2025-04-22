@@ -8,6 +8,21 @@
 <body class="dashboard-page">
     <h1>Dashboard</h1>
 
+    <div class="card-container">
+        <div class="card">
+            <h3>Total de Registros</h3>
+            <p>{{ total }}</p>
+        </div>
+        <div class="card">
+            <h3>Positivos</h3>
+            <p>{{ positivos }}</p>
+        </div>
+        <div class="card">
+            <h3>Negativos</h3>
+            <p>{{ negativos }}</p>
+        </div>
+    </div>
+
     <div class="container">
         <h2>Hemoglobinas</h2>
         <canvas id="graficoHb"></canvas>
@@ -16,6 +31,11 @@
     <div class="container">
         <h2>Pixels RGB</h2>
         <canvas id="graficoRGB"></canvas>
+    </div>
+
+    <div class="container">
+        <h2>Distribuição por Gênero</h2>
+        <canvas id="graficoGenero"></canvas>
     </div>
 
     <div class="container">
@@ -34,6 +54,8 @@
         const resultados = {{ resultados|tojson }};
         const labels = hbs.map((_, i) => `Registro ${i+1}`);
 
+
+        //gráfico hemoglobina
         new Chart(document.getElementById('graficoHb'), {
             type: 'line',
             data: {
@@ -46,7 +68,8 @@
                 }]
             }
         });
-
+        
+        //gráfico pixels
         new Chart(document.getElementById('graficoRGB'), {
             type: 'line',
             data: {
@@ -71,6 +94,35 @@
                         fill: false
                     }
                 ]
+            }
+        });
+        
+        //gráfico gênero
+        const generoLabels = ['Homens', 'Mulheres'];
+        const generoData = [{{ homens }}, {{ mulheres }}];
+
+        new Chart(document.getElementById('graficoGenero'), {
+            type: 'bar',
+            data: {
+                labels: generoLabels,
+                datasets: [{
+                    label: 'Quantidade',
+                    data: generoData,
+                    backgroundColor: ['#17a2b8', '#e83e8c'],
+                    borderColor: ['#117a8b', '#be2c74'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0 // Evita casas decimais
+                        }
+                    }
+                }
             }
         });
 
