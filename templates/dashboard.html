@@ -7,15 +7,77 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="dashboard-page">
+   
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard-page">
+    <h1>Dashboard</h1>
     <div class="container">
-        <h1>Dashboard</h1>
-        <p><strong>Sexo:</strong> {{ campo1 }}</p>
-        <p><strong>Percentual pixel vermelho:</strong> {{ campo2 }}</p>
-        <p><strong>Percentual pixel azul:</strong> {{ campo3 }}</p>
-        <p><strong>Percentual pixel verde:</strong> {{ campo4 }}</p>
-        <p><strong>Hemoglobinas:</strong> {{ campo5 }}</p>
-        <a href="{{ url_for('form') }}" class="back-button">Voltar ao formulário</a>
-        
+        <h2>Hemoglobinas</h2>
+        <canvas id="graficoHb"></canvas>
     </div>
+
+    <div class="container">
+        <h2>Pixels RGB</h2>
+        <canvas id="graficoRGB"></canvas>
+    </div>
+
+    <a href="{{ url_for('form') }}" class="back-button">Voltar ao formulário</a>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const hbs = {{ hbs|tojson }};
+            const reds = {{ reds|tojson }};
+            const greens = {{ greens|tojson }};
+            const blues = {{ blues|tojson }};
+            const labels = hbs.map((_, i) => `Registro ${i+1}`);
+
+            new Chart(document.getElementById('graficoHb'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Hemoglobina (Hb)',
+                        data: hbs,
+                        borderColor: 'purple',
+                        fill: false
+                    }]
+                }
+            });
+
+            new Chart(document.getElementById('graficoRGB'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Pixel Vermelho',
+                            data: reds,
+                            borderColor: 'red',
+                            fill: false
+                        },
+                        {
+                            label: 'Pixel Verde',
+                            data: greens,
+                            borderColor: 'green',
+                            fill: false
+                        },
+                        {
+                            label: 'Pixel Azul',
+                            data: blues,
+                            borderColor: 'blue',
+                            fill: false
+                        }
+                    ]
+                }
+            });
+        </script>
+</body>
+</html>
+
 </body>
 </html>

@@ -24,8 +24,16 @@ def form():
 
 @app.route('/dashboard')
 def dashboard():
-   
-    return render_template('dashboard.html',)
+    hbs = []
+    reds = []
+    greens = []
+    blues = []
+    return render_template('dashboard.html',
+        hbs=hbs,
+        reds=reds,
+        greens=greens,
+        blues=blues
+    )
                 
 
 if __name__ == '__main__':
