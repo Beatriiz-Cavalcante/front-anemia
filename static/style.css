@@ -77,7 +77,11 @@ a:hover {
     text-decoration: underline;
 }
 
-//dashboard
+/*dashboard*/
+
+#h-d1 {
+    color: #ffffff;
+}
 
 .card-container {
     width:20%;

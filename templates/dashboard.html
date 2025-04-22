@@ -179,21 +179,27 @@
             contagem[r] = (contagem[r] || 0) + 1;
         });
 
-        const resultadoLabels = Object.keys(contagem).map(key => `Classe ${key}`);
+        const mapeamento = {
+            0: 'Negativo',
+            1: 'Positivo'
+        };
+
+        const resultadoLabels = Object.keys(contagem).map(key => mapeamento[key] || `Classe ${key}`);
         const resultadoValores = Object.values(contagem);
 
         new Chart(document.getElementById('graficoResultados'), {
-            type: 'pie', // você pode trocar por 'bar' se preferir gráfico de barras
+            type: 'pie',
             data: {
                 labels: resultadoLabels,
                 datasets: [{
                     label: 'Distribuição por classe',
                     data: resultadoValores,
-                    backgroundColor: ['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854'],
+                    backgroundColor: ['#66c2a5', '#fc8d62'], 
                     borderWidth: 1
                 }]
             }
         });
+
     </script>
 </body>
 </html>
