@@ -23,12 +23,22 @@ def form():
         )
     return render_template('form.html')
 
+def contar_faixas(lista):
+    faixas = [(20,30), (30,40), (40,50), (50,60)]
+    contagem = [sum(1 for v in lista if inicio <= v < fim) for (inicio, fim) in faixas]
+    return contagem
+
 @app.route('/dashboard')
 def dashboard():
     try:
         response = requests.get("http://127.0.0.1:5000/consultar")
         dados = response.json()
 
+        hbs=[item['Hb'] for item in dados]
+        reds=[item['%Red Pixel'] for item in dados]
+        greens=[item['%Green pixel'] for item in dados]
+        blues=[item['%Blue pixel'] for item in dados]
+        
         resultados = [item['resultado'] for item in dados]
         total = len(resultados)
         positivos = resultados.count(1)
@@ -39,16 +49,19 @@ def dashboard():
         mulheres = sexos.count(0)
 
         return render_template('dashboard.html',
-            hbs=[item['Hb'] for item in dados],
-            reds=[item['%Red Pixel'] for item in dados],
-            greens=[item['%Green pixel'] for item in dados],
-            blues=[item['%Blue pixel'] for item in dados],
             resultados=resultados,
             total=total,
             positivos=positivos,
             negativos=negativos,
             homens=homens,
-            mulheres=mulheres
+            mulheres=mulheres,
+            red_bins=contar_faixas(reds),
+            green_bins=contar_faixas(greens),
+            blue_bins=contar_faixas(blues),
+            hbs=hbs,
+            reds=reds,
+            greens=greens,
+            blues=blues
         )
     except requests.exceptions.RequestException as e:
         print("Erro ao buscar dados da API:", e)
